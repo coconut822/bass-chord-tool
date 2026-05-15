@@ -99,7 +99,7 @@ function App() {
         <div>
           <p className="eyebrow">Bass Chord Tone Finder</p>
           <h1>贝斯和弦内音查询器</h1>
-          <p className="hero-copy">输入单个和弦或一组和弦，快速查看组成音、共同音，以及当前聚焦和弦在标准四弦贝斯指板上的位置。</p>
+          <p className="hero-copy">输入和弦，查看组成音与四弦贝斯指板位置</p>
         </div>
       </header>
 
@@ -125,6 +125,10 @@ function App() {
           </section>
         </div>
       </div>
+      <footer className="corner-signature" aria-label="版本与作者">
+        <span>v1</span>
+        <span>作者：保湿乳</span>
+      </footer>
     </main>
   );
 }

@@ -40,27 +40,38 @@ export function ChordProgression({ chords, commonTonePairs, onFocusChord }: Chor
         <p className="muted">逐个查看组成音，并观察相邻和弦之间可以保留的共同音。</p>
       </div>
 
-      <div className="progression-grid">
+      <div className="progression-flow">
         {chords.map((chord, index) => (
-          <button className="progression-card" key={`${chord.standardName}-${index}`} type="button" onClick={() => onFocusChord(chord)}>
-            <span className="step-number">{index + 1}</span>
-            <strong>{chord.standardName}</strong>
-            <span>{chord.notes.join(' ')}</span>
-            <small>{chord.intervals.join(' ')}</small>
-          </button>
-        ))}
-      </div>
+          <div className="progression-step" key={`${chord.standardName}-${index}`}>
+            <button className="progression-card" type="button" onClick={() => onFocusChord(chord)}>
+              <span className="step-number">{index + 1}</span>
+              <strong>{chord.standardName}</strong>
+              <span className="mini-tag-list">
+                {chord.notes.map((note) => (
+                  <span className="music-tag note-tag" key={note}>
+                    {note}
+                  </span>
+                ))}
+              </span>
+              <small className="mini-tag-list">
+                {chord.intervals.map((interval) => (
+                  <span className="music-tag role-tag" key={interval}>
+                    {interval}
+                  </span>
+                ))}
+              </small>
+            </button>
 
-      <div className="common-tones">
-        <h3>相邻共同音</h3>
-        {commonTonePairs.map((pair) => (
-          <div className="common-tone-row" key={`${pair.from.standardName}-${pair.to.standardName}`}>
-            <span className="transition-label">
-              {pair.from.standardName} → {pair.to.standardName}
-            </span>
-            <span className={pair.notes.length > 0 ? 'common-note-list' : 'common-note-list empty'}>
-              共同音：{pair.notes.length > 0 ? pair.notes.join('、') : '无'}
-            </span>
+            {commonTonePairs[index] ? (
+              <div className="common-tone-row">
+                <span className="transition-label">
+                  {commonTonePairs[index].from.standardName} → {commonTonePairs[index].to.standardName}
+                </span>
+                <span className={commonTonePairs[index].notes.length > 0 ? 'common-note-list' : 'common-note-list empty'}>
+                  共同音：{commonTonePairs[index].notes.length > 0 ? commonTonePairs[index].notes.join('、') : '无'}
+                </span>
+              </div>
+            ) : null}
           </div>
         ))}
       </div>

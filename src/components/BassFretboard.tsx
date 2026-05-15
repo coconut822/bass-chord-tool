@@ -8,6 +8,7 @@ interface BassFretboardProps {
 
 const FRETS = Array.from({ length: 13 }, (_, index) => index);
 const STRING_NAMES = ['G', 'D', 'A', 'E'] as const;
+const MARKED_FRETS = new Set([3, 5, 7, 9, 12]);
 
 export function BassFretboard({ chord }: BassFretboardProps) {
   const panelRef = useRef<HTMLElement | null>(null);
@@ -35,8 +36,9 @@ export function BassFretboard({ chord }: BassFretboardProps) {
           <div className="fret-row fret-header">
             <div className="string-label">弦</div>
             {FRETS.map((fret) => (
-              <div className="fret-number" key={fret}>
-                {fret}
+              <div className={MARKED_FRETS.has(fret) ? 'fret-number marked' : 'fret-number'} key={fret}>
+                <span>{fret}</span>
+                {MARKED_FRETS.has(fret) ? <i aria-hidden="true" /> : null}
               </div>
             ))}
           </div>
@@ -66,6 +68,7 @@ function FretCell({ position }: { position: FretPosition }) {
       {position.isChordTone ? (
         <span className={`note-marker${roleClass}`} title={`${position.note} ${position.role}`}>
           <strong>{position.note}</strong>
+          <em aria-hidden="true" />
           <small>{position.role}</small>
         </span>
       ) : null}

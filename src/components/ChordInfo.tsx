@@ -43,11 +43,23 @@ export function ChordInfo({ chord, copied, onCopy }: ChordInfoProps) {
         </div>
         <div>
           <dt>组成音</dt>
-          <dd>{chord.notes.join(' ')}</dd>
+          <dd className="tag-list">
+            {chord.notes.map((note) => (
+              <span className="music-tag note-tag" key={note}>
+                {note}
+              </span>
+            ))}
+          </dd>
         </div>
         <div>
           <dt>音程结构</dt>
-          <dd>{chord.intervals.join(' ')}</dd>
+          <dd className="tag-list">
+            {chord.intervals.map((interval) => (
+              <span className={`music-tag role-tag role-${interval.replace('#', 'sharp').replace('b', 'flat')}`} key={interval}>
+                {interval}
+              </span>
+            ))}
+          </dd>
         </div>
       </dl>
     </section>

@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react';
 import { FretPosition, generateBassFretboard, ParsedChord } from '../lib/musicTheory';
+import { animateMarkers, animatePanelRefresh } from '../lib/motion';
 
 interface BassFretboardProps {
   chord: ParsedChord;
@@ -8,10 +10,21 @@ const FRETS = Array.from({ length: 13 }, (_, index) => index);
 const STRING_NAMES = ['G', 'D', 'A', 'E'] as const;
 
 export function BassFretboard({ chord }: BassFretboardProps) {
+  const panelRef = useRef<HTMLElement | null>(null);
   const positions = generateBassFretboard(chord);
 
+  useEffect(() => {
+    const panelAnimation = animatePanelRefresh(panelRef.current);
+    const markerAnimation = animateMarkers(panelRef.current?.querySelectorAll('.note-marker') ?? []);
+
+    return () => {
+      panelAnimation?.revert();
+      markerAnimation?.revert();
+    };
+  }, [chord.standardName]);
+
   return (
-    <section className="panel fretboard-panel" aria-labelledby="fretboard-title">
+    <section className="panel fretboard-panel" ref={panelRef} aria-labelledby="fretboard-title">
       <div className="section-heading">
         <h2 id="fretboard-title">标准四弦贝斯指板</h2>
         <p className="muted">当前显示 {chord.standardName}。标准调弦 E A D G，范围 0 到 12 品。</p>

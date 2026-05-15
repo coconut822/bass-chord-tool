@@ -81,6 +81,12 @@ button {
   padding: 18px;
 }
 
+.info-panel,
+.progression-panel,
+.fretboard-panel {
+  will-change: opacity, transform;
+}
+
 .panel h2,
 .panel h3 {
   margin: 0;
@@ -317,11 +323,17 @@ button {
   color: #172019;
   padding: 12px;
   text-align: left;
+  will-change: opacity, transform;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
 }
 
 .progression-card:hover {
   border-color: rgba(46, 111, 95, 0.45);
   background: #f4faf7;
+  transform: translateY(-1px);
 }
 
 .progression-card strong {
@@ -364,6 +376,8 @@ button {
   min-height: 42px;
   border-top: 1px solid rgba(23, 32, 25, 0.08);
   padding-top: 10px;
+  border-radius: 8px;
+  padding-inline: 8px;
 }
 
 .transition-label {
@@ -493,6 +507,7 @@ button {
   background: #d8b14b;
   color: #17150d;
   box-shadow: 0 6px 14px rgba(23, 32, 25, 0.22);
+  will-change: opacity, transform;
 }
 
 .note-marker strong {
@@ -627,5 +642,16 @@ button {
 
   .fretboard {
     min-width: 720px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

@@ -1,5 +1,7 @@
 import { Check, Copy } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { ParsedChord } from '../lib/musicTheory';
+import { animatePanelRefresh } from '../lib/motion';
 
 interface ChordInfoProps {
   chord: ParsedChord;
@@ -8,8 +10,17 @@ interface ChordInfoProps {
 }
 
 export function ChordInfo({ chord, copied, onCopy }: ChordInfoProps) {
+  const panelRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const animation = animatePanelRefresh(panelRef.current);
+    return () => {
+      animation?.revert();
+    };
+  }, [chord.standardName]);
+
   return (
-    <section className="panel info-panel" aria-labelledby="result-title">
+    <section className="panel info-panel" ref={panelRef} aria-labelledby="result-title">
       <div className="result-title-row">
         <div>
           <p className="eyebrow">当前聚焦和弦</p>

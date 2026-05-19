@@ -7,9 +7,12 @@ export type ChordTypeId =
   | 'sus4'
   | 'dominant7'
   | 'maj7'
-  | 'min7';
+  | 'min7'
+  | 'dominant9'
+  | 'maj9'
+  | 'min9';
 
-export type ChordToneRole = '1' | 'b3' | '3' | '4' | '5' | '#5' | 'b5' | 'b7' | '7' | '2';
+export type ChordToneRole = '1' | 'b3' | '3' | '4' | '5' | '#5' | 'b5' | 'b7' | '7' | '2' | '9';
 
 export interface ChordTypeDefinition {
   id: ChordTypeId;
@@ -140,6 +143,30 @@ export const CHORD_TYPES: ChordTypeDefinition[] = [
     intervals: [0, 3, 7, 10],
     roles: ['1', 'b3', '5', 'b7'],
     aliases: ['m7', 'min7', 'minor7', '小七和弦'],
+  },
+  {
+    id: 'dominant9',
+    label: '属九和弦',
+    symbolSuffix: '9',
+    intervals: [0, 4, 7, 10, 14],
+    roles: ['1', '3', '5', 'b7', '9'],
+    aliases: ['9', 'dom9', 'dominant9', '属九和弦'],
+  },
+  {
+    id: 'maj9',
+    label: '大九和弦',
+    symbolSuffix: 'maj9',
+    intervals: [0, 4, 7, 11, 14],
+    roles: ['1', '3', '5', '7', '9'],
+    aliases: ['maj9', 'major9', 'ma9', '大九和弦'],
+  },
+  {
+    id: 'min9',
+    label: '小九和弦',
+    symbolSuffix: 'm9',
+    intervals: [0, 3, 7, 10, 14],
+    roles: ['1', 'b3', '5', 'b7', '9'],
+    aliases: ['m9', 'min9', 'minor9', '小九和弦'],
   },
 ];
 
@@ -307,12 +334,13 @@ export function pitchClassToNote(pitchClass: number): string {
 
 export function getSupportedInputExamples(): string[] {
   return [
-    '单个和弦：Em、Cmaj7、C大三和弦、F#sus4',
-    '多个和弦：Em | B | A | G',
+    '单个和弦：Em、Cmaj7、C9、Cmaj9、Cm9、F#sus4',
+    '多个和弦：Em | B9 | Amaj9 | G',
     '空格分隔：Em B A G',
     '大三和弦：C / Cmaj / C major / C大三和弦',
     '小三和弦：Cm / Cmin / C minor / C小三和弦',
     '七和弦：C7 / C属七和弦 / Cmaj7 / Cm7',
+    '九和弦：C9 / C属九和弦 / Cmaj9 / C大九和弦 / Cm9 / C小九和弦',
     '升降根音：C#、Db、F#、Gb 等',
   ];
 }

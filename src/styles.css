@@ -404,6 +404,11 @@ button {
   color: #385f99;
 }
 
+.role-tag.role-9 {
+  background: #eadff7;
+  color: #6f4ca0;
+}
+
 .progression-panel {
   display: grid;
   gap: 16px;
@@ -684,6 +689,11 @@ button {
 .note-marker.role-7,
 .note-marker.role-flat7 {
   background: #4a6fa7;
+  color: #ffffff;
+}
+
+.note-marker.role-9 {
+  background: #7354a3;
   color: #ffffff;
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { CommonTonePair, ParsedChord } from '../lib/musicTheory';
+import { CommonTonePair, ParsedChord } from '../lib/chords';
 import { animateCommonTonePulse, animateListItems, animatePanelRefresh } from '../lib/motion';
+import { ToneTags } from './ToneTags';
 
 interface ChordProgressionProps {
   chords: ParsedChord[];
@@ -37,7 +38,7 @@ export function ChordProgression({ chords, commonTonePairs, onFocusChord }: Chor
       <div className="section-heading">
         <p className="eyebrow">多和弦模式</p>
         <h2 id="progression-title">和弦组信息</h2>
-        <p className="muted">逐个查看组成音，并观察相邻和弦之间可以保留的共同音。</p>
+        <p className="muted">逐个查看组成音，并观察相邻和弦之间可保留的共同音。</p>
       </div>
 
       <div className="progression-flow">
@@ -46,20 +47,8 @@ export function ChordProgression({ chords, commonTonePairs, onFocusChord }: Chor
             <button className="progression-card" type="button" onClick={() => onFocusChord(chord)}>
               <span className="step-number">{index + 1}</span>
               <strong>{chord.standardName}</strong>
-              <span className="mini-tag-list">
-                {chord.notes.map((note) => (
-                  <span className="music-tag note-tag" key={note}>
-                    {note}
-                  </span>
-                ))}
-              </span>
-              <small className="mini-tag-list">
-                {chord.intervals.map((interval) => (
-                  <span className="music-tag role-tag" key={interval}>
-                    {interval}
-                  </span>
-                ))}
-              </small>
+              <ToneTags items={chord.notes} />
+              <ToneTags items={chord.intervals} type="role" />
             </button>
 
             {commonTonePairs[index] ? (

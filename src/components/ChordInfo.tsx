@@ -1,7 +1,8 @@
 import { Check, Copy } from 'lucide-react';
 import { useEffect, useRef } from 'react';
-import { ParsedChord } from '../lib/musicTheory';
+import { ParsedChord } from '../lib/chords';
 import { animatePanelRefresh } from '../lib/motion';
+import { ToneTags } from './ToneTags';
 
 interface ChordInfoProps {
   chord: ParsedChord;
@@ -43,22 +44,14 @@ export function ChordInfo({ chord, copied, onCopy }: ChordInfoProps) {
         </div>
         <div>
           <dt>组成音</dt>
-          <dd className="tag-list">
-            {chord.notes.map((note) => (
-              <span className="music-tag note-tag" key={note}>
-                {note}
-              </span>
-            ))}
+          <dd>
+            <ToneTags items={chord.notes} />
           </dd>
         </div>
         <div>
           <dt>音程结构</dt>
-          <dd className="tag-list">
-            {chord.intervals.map((interval) => (
-              <span className={`music-tag role-tag role-${interval.replace('#', 'sharp').replace('b', 'flat')}`} key={interval}>
-                {interval}
-              </span>
-            ))}
+          <dd>
+            <ToneTags items={chord.intervals} type="role" />
           </dd>
         </div>
       </dl>

@@ -1,18 +1,21 @@
 import { useEffect, useRef } from 'react';
-import { FretPosition, generateBassFretboard, ParsedChord } from '../lib/musicTheory';
+import { FretPosition, FretboardMarker, generateFretboard } from '../lib/fretboard';
 import { animateMarkers, animatePanelRefresh } from '../lib/motion';
 
 interface BassFretboardProps {
-  chord: ParsedChord;
+  title: string;
+  description: string;
+  markers: FretboardMarker[];
+  animationKey: string;
 }
 
 const FRETS = Array.from({ length: 13 }, (_, index) => index);
 const STRING_NAMES = ['G', 'D', 'A', 'E'] as const;
 const MARKED_FRETS = new Set([3, 5, 7, 9, 12]);
 
-export function BassFretboard({ chord }: BassFretboardProps) {
+export function BassFretboard({ title, description, markers, animationKey }: BassFretboardProps) {
   const panelRef = useRef<HTMLElement | null>(null);
-  const positions = generateBassFretboard(chord);
+  const positions = generateFretboard(markers);
 
   useEffect(() => {
     const panelAnimation = animatePanelRefresh(panelRef.current);
@@ -22,16 +25,16 @@ export function BassFretboard({ chord }: BassFretboardProps) {
       panelAnimation?.revert();
       markerAnimation?.revert();
     };
-  }, [chord.standardName]);
+  }, [animationKey]);
 
   return (
     <section className="panel fretboard-panel" ref={panelRef} aria-labelledby="fretboard-title">
       <div className="section-heading">
-        <h2 id="fretboard-title">标准四弦贝斯指板</h2>
-        <p className="muted">当前显示 {chord.standardName}。标准调弦 E A D G，范围 0 到 12 品。</p>
+        <h2 id="fretboard-title">{title}</h2>
+        <p className="muted">{description}</p>
       </div>
 
-      <div className="fretboard-scroll" aria-label={`${chord.standardName} 指板音位`}>
+      <div className="fretboard-scroll" aria-label={`${title} 指板音位`}>
         <div className="fretboard">
           <div className="fret-row fret-header">
             <div className="string-label">弦</div>
@@ -60,16 +63,19 @@ export function BassFretboard({ chord }: BassFretboardProps) {
 }
 
 function FretCell({ position }: { position: FretPosition }) {
-  const roleClass = position.role ? ` role-${position.role.replace('#', 'sharp').replace('b', 'flat')}` : '';
+  const marker = position.marker;
+  const roleClass = marker ? ` role-${marker.role.replace('#', 'sharp').replace('b', 'flat')}` : '';
+  const kindClass = marker ? ` marker-${marker.kind}` : '';
+  const rootClass = marker?.isRoot ? ' is-root' : '';
 
   return (
     <div className="fret-cell">
       <span className="string-line" aria-hidden="true" />
-      {position.isChordTone ? (
-        <span className={`note-marker${roleClass}`} title={`${position.note} ${position.role}`}>
-          <strong>{position.note}</strong>
+      {marker ? (
+        <span className={`note-marker${roleClass}${kindClass}${rootClass}`} title={`${marker.note} ${marker.role}`}>
+          <strong>{marker.note}</strong>
           <em aria-hidden="true" />
-          <small>{position.role}</small>
+          <small>{marker.role}</small>
         </span>
       ) : null}
     </div>

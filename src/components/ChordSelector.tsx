@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { CHORD_TYPES, ChordTypeId, ROOT_OPTIONS } from '../lib/musicTheory';
+import { CHORD_TYPES, ChordTypeId } from '../lib/chords';
+import { ROOT_OPTIONS } from '../lib/musicTheory';
 
 interface ChordSelectorProps {
   selectedRoot: string;
@@ -27,12 +28,7 @@ export function ChordSelector({ selectedRoot, selectedTypeId, onSelect }: ChordS
             <h3>根音</h3>
             <div className="button-grid roots">
               {ROOT_OPTIONS.map((root) => (
-                <button
-                  className={root.value === selectedRoot ? 'chip selected' : 'chip'}
-                  key={root.value}
-                  type="button"
-                  onClick={() => onSelect(root.value, selectedTypeId)}
-                >
+                <button className={root.value === selectedRoot ? 'chip selected' : 'chip'} key={root.value} type="button" onClick={() => onSelect(root.value, selectedTypeId)}>
                   {root.label}
                 </button>
               ))}
@@ -43,12 +39,7 @@ export function ChordSelector({ selectedRoot, selectedTypeId, onSelect }: ChordS
             <h3>和弦类型</h3>
             <div className="button-grid chord-types">
               {CHORD_TYPES.map((type) => (
-                <button
-                  className={type.id === selectedTypeId ? 'chip selected' : 'chip'}
-                  key={type.id}
-                  type="button"
-                  onClick={() => onSelect(selectedRoot, type.id)}
-                >
+                <button className={type.id === selectedTypeId ? 'chip selected' : 'chip'} key={type.id} type="button" onClick={() => onSelect(selectedRoot, type.id)}>
                   {type.label}
                 </button>
               ))}
